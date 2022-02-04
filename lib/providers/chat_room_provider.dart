@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ws_chat/controller/web_socket_controller.dart';
 
 class ChatRoom with ChangeNotifier{
   List<Room> rooms = [];
@@ -9,7 +10,7 @@ class ChatRoom with ChangeNotifier{
 
   void newMessage(MessageData data){
     var roomPosition = findRoom(rooms, data);
-    var message = Message(type: data.type, message: data.message, sender: User(username: data.sender,userId: data.sender), time: data.time);
+    var message = Message(type: data.type,room: data.room, message: data.message,receiver: User(userId: data.receiver,username: data.receiver), sender: User(username: data.sender,userId: data.sender), time: data.time);
     if(roomPosition != null){
       // Room already exits
       rooms[roomPosition].messages!.add(message);
@@ -34,9 +35,17 @@ class ChatRoom with ChangeNotifier{
 
 int? findRoom(List<Room> rooms,MessageData data){
   for (int i = 0 ; i < rooms.length ; i++) {
+    bool personal = rooms[i].type == "personal";
+    if(!personal){
       if(data.room == rooms[i].id){
         return i;
       }
+    }else{
+      if(data.receiver == rooms[i].id){
+        return i;
+      }
+    }
+
   }
   return null;
 }
@@ -49,8 +58,8 @@ Room createRoom(MessageData data){
     room.id = data.room!;
   }else{
     room.type = "personal";
-    room.name = data.room!.split("user/")[1];
-    room.id = data.room!;
+    room.name = data.sender!;
+    room.id = data.sender!;
   }
   return room;
 }
@@ -77,9 +86,11 @@ class Room{
 class Message{
   String? type;
   User? sender;
+  User? receiver;
   String? message;
   String? time;
-  Message({required this.type,required this.message,required this.sender,required this.time});
+  String? room;
+  Message({required this.type,required this.message,required this.sender,required this.time,required this.receiver,required this.room});
 }
 
 class User{
@@ -94,15 +105,16 @@ class MessageData{
   String? sender;
   String? message;
   String? time;
-  MessageData({this.type,this.message,this.room,this.sender,this.time});
+  String? receiver;
+  MessageData({this.type,this.message,this.room,this.sender,this.time,this.receiver});
   MessageData.fromJson(Map<String, dynamic> json){
     message = json['message'];
     time = json['time'];
     type = json['type'];
-    sender = json['from'];
+    sender = json['from'].toString().split("user/")[1];
     room = json['to'];
+    receiver = SocketController.username;
   }
-// {"event":"chat","payload":{"message":"hello all","from":"junu","to":"group/India","type":"text","time":"2022-01-31T00:53:58+04:00"}}
 }
 class MessageParser{
   String? event;

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ws_chat/pages/chat_room.dart';
 import 'package:flutter_ws_chat/providers/chat_room_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'pages/personal_chat_room.dart';
 
 class ChatRoomsView extends StatelessWidget{
   const ChatRoomsView({Key? key}) : super(key: key);
@@ -16,7 +15,8 @@ class ChatRoomsView extends StatelessWidget{
               var room = chat.rooms[index];
               return InkWell(
                 onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PersonalChatRoom(position: index,)));
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PersonalChatRoom(position: index,)));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatRoomViewAll(position: index,name: room.name!,)));
                 },
                 child: Card(
                   child: Padding(
