@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ws_chat/pages/welcome.dart';
 import 'package:provider/provider.dart';
 
-import 'home.dart';
 import 'providers/chat_room_provider.dart';
 
 void main() {

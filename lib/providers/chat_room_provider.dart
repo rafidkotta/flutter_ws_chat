@@ -3,6 +3,8 @@ import 'package:flutter_ws_chat/controller/web_socket_controller.dart';
 
 class ChatRoom with ChangeNotifier{
   List<Room> rooms = [];
+  List<User> people = [];
+  List<Group> groups = [];
 
   int get count => rooms.length;
 
@@ -24,6 +26,12 @@ class ChatRoom with ChangeNotifier{
       rooms.add(room);
       notifyListeners();
     }
+  }
+
+  void welcome(WelcomeData welcome){
+    people.addAll(welcome.users);
+    groups.addAll(welcome.groups);
+    notifyListeners();
   }
 
   void clearAll(){
@@ -97,6 +105,10 @@ class User{
   String? username;
   String? userId;
   User({this.username, this.userId});
+  User.fromJSON(Map<String, dynamic> json){
+    username = json['username'];
+    userId = json['id'];
+  }
 }
 
 class MessageData{
@@ -124,4 +136,33 @@ class MessageParser{
 
 String getEventType(Map<String, dynamic> json){
   return json['event'];
+}
+
+class Group{
+  String? id;
+  String? name;
+  String? logo;
+  Group({this.id,this.name,this.logo});
+  Group.fromJSON(Map<String, dynamic> json){
+    id = json['id'];
+    name = json['name'];
+    logo = "";
+  }
+}
+
+class WelcomeData{
+  List<User> users = [];
+  List<Group> groups = [];
+  WelcomeData.fromJSON(Map<String, dynamic> json){
+    if (json['groups'] != null) {
+      json['groups'].forEach((v) {
+        groups.add(Group.fromJSON(v));
+      });
+    }
+    if (json['people'] != null) {
+      json['people'].forEach((v) {
+        users.add(User.fromJSON(v));
+      });
+    }
+  }
 }

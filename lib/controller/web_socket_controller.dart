@@ -24,12 +24,16 @@ class SocketController {
   static handleEvents(Map<String,dynamic> event){
     var type = _getEventType(event);
     switch (type){
-      case "chat" :{
+      case "chat":{
         Provider.of<ChatRoom>(context!,listen: false).newMessage(MessageData.fromJson(event['payload']));
       }
       break;
       case "alert":{
         showSnackBar(context: context!,color: Colors.amber,message: event['payload']['message']);
+      }
+      break;
+      case "welcome":{
+        Provider.of<ChatRoom>(context!,listen: false).welcome(WelcomeData.fromJSON(event['payload']));
       }
       break;
       default :{
