@@ -5,6 +5,7 @@ import 'package:flutter_ws_chat/providers/chat_room_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../config.dart';
 import '../utils.dart';
 
 class SocketController {
@@ -48,7 +49,7 @@ class SocketController {
 
   static bool _connect(){
     try{
-      _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.0.110:3000/chat/'+username!));
+      _channel = WebSocketChannel.connect(Uri.parse(urlWebSocket+'/chat/'+username!));
       _channel!.stream.listen((event) {
         handleEvents(json.decode(event));
       },
