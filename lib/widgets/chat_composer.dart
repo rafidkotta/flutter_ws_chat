@@ -24,12 +24,20 @@ Container buildChatComposer(OnMessage onMessage) {
                 ),
                 Expanded(
                   child: TextField(
+                    onTap: () => onMessage(""),
+                    textCapitalization: TextCapitalization.characters,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Type your message ...',
                       hintStyle: TextStyle(color: Colors.grey[500]),
                     ),
                     controller: editingController,
+                    onSubmitted: (msg){
+                      if(msg!=""){
+                        onMessage(msg);
+                        editingController.clear();
+                      }
+                    },
                   ),
                 ),
               ],

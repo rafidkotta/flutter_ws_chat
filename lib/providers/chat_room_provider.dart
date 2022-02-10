@@ -1,4 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ws_chat/config.dart';
 import 'package:flutter_ws_chat/controller/web_socket_controller.dart';
 
 class ChatRoom with ChangeNotifier{
@@ -11,6 +13,11 @@ class ChatRoom with ChangeNotifier{
   Room getRoom(int pos) => rooms[pos];
 
   void newMessage(MessageData data){
+    if(data.receiver == SocketController.username){
+      AudioCache().play(assetMsgReceived);
+    }else{
+      AudioCache().play(assetMsgSent);
+    }
     var roomPosition = findRoom(rooms, data);
     var message = Message(type: data.type,room: data.room, message: data.message,receiver: User(userId: data.receiver,username: data.receiver), sender: User(username: data.sender,userId: data.sender), time: data.time);
     if(roomPosition != null){
@@ -26,6 +33,28 @@ class ChatRoom with ChangeNotifier{
       rooms.add(room);
       notifyListeners();
     }
+  }
+
+  int createNewRoom(Room room){
+    rooms.add(room);
+    return rooms.length-1;
+  }
+
+  int findPersonalRoom(User user){
+    for(int i = 0 ; i < rooms.length ; i++){
+      if(rooms[i].type == "personal" && user.userId == rooms[i].id){
+        return i;
+      }
+    }
+    return -1;
+  }
+  int findGroupRoom(Group group){
+    for(int i = 0 ; i < rooms.length ; i++){
+      if(rooms[i].type != "personal" && group.id == rooms[i].id){
+        return i;
+      }
+    }
+    return -1;
   }
 
   void welcome(WelcomeData welcome){
@@ -49,7 +78,7 @@ int? findRoom(List<Room> rooms,MessageData data){
         return i;
       }
     }else{
-      if(data.receiver == rooms[i].id){
+      if(data.receiver == rooms[i].id || data.sender == rooms[i].id){
         return i;
       }
     }

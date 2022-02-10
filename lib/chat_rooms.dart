@@ -33,7 +33,7 @@ class ChatRoomsView extends StatelessWidget{
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(room.name!,style: const TextStyle(fontSize: 24),),
-                                Text(room.messages!.last.message!,style: const TextStyle(fontSize: 14),)
+                                room.messages!.isNotEmpty ? Text(room.messages!.last.message!,style: const TextStyle(fontSize: 14),): const Text("")
                               ],
                             ),
                           ),
@@ -42,7 +42,7 @@ class ChatRoomsView extends StatelessWidget{
                           flex: 1,
                           child: Column(
                             children: [
-                              Text(room.messages!.last.time!.split(" ")[0],maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              room.messages!.isNotEmpty ? Text(room.messages!.last.time!.split(" ")[0],maxLines: 1,overflow: TextOverflow.ellipsis,): const Text(""),
                               CircleAvatar(child: Center(child: Text(room.messages!.length.toString(),style: const TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),radius: 12,)
                             ],
                           ),

@@ -71,15 +71,9 @@ class _ChatRoomViewAllState extends State<ChatRoomViewAll> {
         child: Column(
           children: [
             Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Conversation(position: widget.position,),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Conversation(position: widget.position),
               ),
             ),
             buildChatComposer((onMessage){
@@ -87,7 +81,7 @@ class _ChatRoomViewAllState extends State<ChatRoomViewAll> {
                 SocketController.sendMessage({
                   "event": "message",
                   "payload": {
-                    "to":widget.name,
+                    "to":"user/"+widget.name,
                     "message": onMessage
                   }
                 });
