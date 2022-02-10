@@ -42,7 +42,7 @@ class ChatRoom with ChangeNotifier{
 
   int findPersonalRoom(User user){
     for(int i = 0 ; i < rooms.length ; i++){
-      if(rooms[i].type == "personal" && user.userId == rooms[i].id){
+      if(rooms[i].type == "personal" && user.username == rooms[i].id){
         return i;
       }
     }
