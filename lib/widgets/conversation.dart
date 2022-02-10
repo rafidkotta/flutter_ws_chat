@@ -28,6 +28,7 @@ class _ConversationState extends State<Conversation> {
         itemScrollController: _controller,
         shrinkWrap: true,
         itemCount: room.messages!.length,
+        initialScrollIndex: room.messages!.length,
         itemBuilder: (context, int index) {
           final message = room.messages![index];
           bool isMe = message.sender!.username == SocketController.username;
@@ -102,7 +103,7 @@ class _ConversationState extends State<Conversation> {
   }
 
   void _scrollDown(int position) async {
-    await Future.delayed(const Duration(microseconds: 2000));
+    await Future.delayed(const Duration(microseconds: 500));
     _controller.scrollTo(
       index: position,
       duration: const Duration(seconds: 1),
