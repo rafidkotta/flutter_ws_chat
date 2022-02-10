@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ws_chat/controller/web_socket_controller.dart';
 import 'package:flutter_ws_chat/utils.dart';
 import 'package:provider/src/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../providers/chat_room_provider.dart';
 
 import '../app_theme.dart';
@@ -16,15 +17,16 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
-  final ScrollController _controller = ScrollController();
+  final ItemScrollController _controller = ItemScrollController();
 
   @override
   Widget build(BuildContext context) {
     var room = context.watch<ChatRoom>().rooms[widget.position];
-    _scrollDown();
-    return ListView.builder(
+    _scrollDown(room.messages!.length);
+    return ScrollablePositionedList.builder(
         reverse: false,
-        controller: _controller,
+        itemScrollController: _controller,
+        shrinkWrap: true,
         itemCount: room.messages!.length,
         itemBuilder: (context, int index) {
           final message = room.messages![index];
@@ -99,10 +101,10 @@ class _ConversationState extends State<Conversation> {
         });
   }
 
-  void _scrollDown() async {
-    await Future.delayed(const Duration(microseconds: 1000));
-    _controller.animateTo(
-      _controller.position.maxScrollExtent,
+  void _scrollDown(int position) async {
+    await Future.delayed(const Duration(microseconds: 2000));
+    _controller.scrollTo(
+      index: position,
       duration: const Duration(seconds: 1),
       curve: Curves.linearToEaseOut,
     );
