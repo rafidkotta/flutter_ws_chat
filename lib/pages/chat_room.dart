@@ -23,7 +23,7 @@ class _ChatRoomViewAllState extends State<ChatRoomViewAll> {
       appBar: AppBar(
         toolbarHeight: 60,
         centerTitle: false,
-        leadingWidth: 30,
+        leadingWidth: 35,
         automaticallyImplyLeading: false,
         leading: IconButton(onPressed: (){
           Navigator.of(context).pop();
@@ -38,7 +38,7 @@ class _ChatRoomViewAllState extends State<ChatRoomViewAll> {
               // ),
             ),
             const SizedBox(
-              width: 20,
+              width: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,7 +25,7 @@ Container buildChatComposer(OnMessage onMessage) {
                 Expanded(
                   child: TextField(
                     onTap: () => onMessage(""),
-                    textCapitalization: TextCapitalization.characters,
+                    textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Type your message ...',
