@@ -21,11 +21,12 @@ class PeopleView extends StatelessWidget{
                     if(pos != -1){
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatRoomViewAll(position: pos,name: chat.rooms[pos].name!,)));
+                    }else{
+                      Room newRoom = Room(id: people[index].username, name: people[index].username, type: "personal", messages: [], participants: [people[index]]);
+                      pos = chat.createNewRoom(newRoom);
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatRoomViewAll(position: pos,name: chat.rooms[pos].name!,)));
                     }
-                    Room newRoom = Room(id: people[index].username, name: people[index].username, type: "personal", messages: [], participants: [people[index]]);
-                    pos = chat.createNewRoom(newRoom);
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatRoomViewAll(position: pos,name: chat.rooms[pos].name!,)));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
